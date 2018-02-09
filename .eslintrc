@@ -1,0 +1,43 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb-base",
+  "parserOptions": {
+    "allowImportExportEverywhere": false
+  },
+  "rules": {
+    "func-names": ["error", "never"],
+    "indent": ["error", 4, {
+      "SwitchCase": 1
+    }],
+    "no-var": ["warn"],
+    "comma-dangle": ["warn"],
+    "no-param-reassign": ["warn", {
+      "props": false
+    }],
+    "max-len": ["warn", 160],
+    "no-plusplus": ["off"],
+    "no-unused-vars": ["warn", { "varsIgnorePattern": "[cC]ss" }],
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": [
+        "*.config.js",
+        "configuration/**/*.js",
+        "test/**/*.js",
+        "**/*_spec.js"
+      ]
+    }]
+  },
+  "env": {
+    "jasmine": true,
+    "mocha": true
+  },
+  "globals": {
+    "FileReader": true,
+    "window": true,
+    "Image": true,
+    "document": true,
+    "sinon": true,
+    "API_PATH": true,
+    "IS_PROD": true,
+    "KEYCLOAK_CONFIG": true
+  }
+}
