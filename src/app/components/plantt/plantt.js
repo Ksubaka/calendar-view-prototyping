@@ -1,4 +1,7 @@
 import angular from 'angular';
+import templateUrl from './plantt-template.html';
+import css from './plantt.less';
+
 /*
  *
  * Plantt Angular Module : HTML Scheduler
@@ -66,13 +69,14 @@ function addDaysToDate(date, days) {
 /**
  * PLANTT MODULE MAIN DECLARATION
  */
+
 const module = angular.module('plantt.module', [])
 /*
    * SCHEDULER directive
    */
   .directive('scheduler', ($window, $document, $timeout, $rootScope, $filter, dateFilter) => ({
       restrict: 'E', // DOM Element only : <scheduler></scheduler>
-      templateUrl: './plantt-template.html', // Load HTML template for the view
+      templateUrl,
       link(scope) {
         // Create the list of events variable, if not present in the app controller
           if (!scope.events) { scope.events = []; }

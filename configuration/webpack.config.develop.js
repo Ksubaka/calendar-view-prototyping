@@ -56,7 +56,7 @@ module.exports = function () {
         devtool: 'eval',
         devServer: {
             contentBase: path.resolve('src', 'public', 'index.html'),
-            port: 5000,
+            port: 9000,
         },
     });
 };

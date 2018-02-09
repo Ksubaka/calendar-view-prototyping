@@ -1,10 +1,14 @@
 import _ from 'lodash';
 import angular from 'angular';
-import plantt from './components/plantt/plantt';
-import planttState from './states/planttTest';
+// CSS
+import '../public/less/app.less';
+import './components/plantt/plantt';
+
+const planttState = require('./states/planttTest');
+
 
 const libDependencies = [
-    plantt,
+    'plantt.module',
 ];
 
 const appDependencies = [
@@ -13,4 +17,4 @@ const appDependencies = [
 
 const dependencies = _.concat([], libDependencies, appDependencies);
 
-angular.module('planttTest', dependencies);
+angular.module('planttTestApp', dependencies);

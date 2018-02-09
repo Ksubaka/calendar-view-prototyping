@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" ng-app="planttTestApp">
 
   <head>
     <base href="/">
@@ -13,8 +13,19 @@
 
   <body>
 
-    <div>test</div>
-    <scheduler ng-controller="PlanttTestController"></scheduler>
+  <div class="container-fluid">
+    <section class="row">
+      <div class="col-md-12">
+        <scheduler ng-controller="PlanttTestController"></scheduler>
+      </div>
+    </section>
+
+    <section class="row">
+      <div class="col-md-12">
+        TEST
+      </div>
+    </section>
+  </div>
 
   </body>
 </html>
