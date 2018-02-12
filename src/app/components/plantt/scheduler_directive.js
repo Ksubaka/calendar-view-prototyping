@@ -1,52 +1,28 @@
 import angular from 'angular';
-import templateUrl from './plantt-template.html';
+import templateUrl from './scheduler_directive.html';
 
 /* @ngInject */
-function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, dateFilter) {
+function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, dateFilter, SchedulerHelperService) {
     return {
         restrict: 'E',
         templateUrl,
         link(scope) {
-            function addDaysToDate(date, days) {
-                const mdate = new Date(date.getTime());
-
-                mdate.setTime(mdate.getTime() + (days * 1000 * 60 * 60 * 24));
-                mdate.setHours(12); mdate.setMinutes(0); mdate.setSeconds(0); mdate.setMilliseconds(0);
-                return mdate;
-            }
-
-            function daysInPeriod(date1, date2, wantDiff) {
-                const oneDay = 1000 * 60 * 60 * 24;
-
-                date1.setHours(12); date1.setMinutes(0); date1.setSeconds(0); date1.setMilliseconds(0);
-                date2.setHours(12); date2.setMinutes(0); date2.setSeconds(0); date2.setMilliseconds(0);
-                const result = parseInt((date2.getTime() - date1.getTime()) / oneDay, 10);
-
-                if (wantDiff) { return result; } return Math.abs(result);
-            }
-
-            function daysInMonth(date) {
-                const r = new Date(date.getYear(), date.getMonth() + 1, 0).getDate();
-
-                return parseInt(r, 10);
-            }
-
             // Create the list of events variable, if not present in the app controller
             if (!scope.events) {
                 scope.events = [];
             }
             // Today's date
-            scope.currDate = addDaysToDate(new Date(), 0);
+            scope.currDate = SchedulerHelperService.addDaysToDate(new Date(), 0);
 
           /*
            * OPTIONS VALUES
            * Can be overwritten in app controller
            */
             if (!scope.viewStart) { // Firt day to display in view. Default: today minus 7 days
-                scope.viewStart = addDaysToDate(scope.currDate, -7);
+                scope.viewStart = SchedulerHelperService.addDaysToDate(scope.currDate, -7);
             }
             if (!scope.viewEnd) { // Last day to display in view. Default: today plus 14 days
-                scope.viewEnd = addDaysToDate(scope.currDate, 14);
+                scope.viewEnd = SchedulerHelperService.addDaysToDate(scope.currDate, 14);
             }
             if (!scope.eventHeight) {
                 scope.eventHeight = 50;
@@ -163,7 +139,7 @@ function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, d
                 scope.enumDays = []; // List of objects describing all days within the view.
                 scope.enumMonths = []; // List of objects describing all months within the view.
                 scope.gridWidth = $document.find('tbody').prop('offsetWidth'); // Width of the rendered grid
-                scope.viewPeriod = daysInPeriod(scope.viewStart, scope.viewEnd, false); // Number of days in period of the view
+                scope.viewPeriod = SchedulerHelperService.daysInPeriod(scope.viewStart, scope.viewEnd, false); // Number of days in period of the view
                 scope.cellWidth = scope.gridWidth / (scope.viewPeriod + 1); // Width of the days cells of the grid
                 scope.HcellWidth = scope.cellWidth / scope.nbHours; // Width of the hours cells of the grid
                 scope.linesFill = {}; // Empty the lines filling map
@@ -175,9 +151,9 @@ function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, d
                 let nbMonths = 0;
 
                 for (let d = 0; d <= scope.viewPeriod; d++) {
-                    const dayDate = addDaysToDate(scope.viewStart, d);
+                    const dayDate = SchedulerHelperService.addDaysToDate(scope.viewStart, d);
                     const today = scope.currDate.getTime() === dayDate.getTime();
-                    const isLastOfMonth = daysInMonth(dayDate) === dayDate.getDate();
+                    const isLastOfMonth = SchedulerHelperService.daysInMonth(dayDate) === dayDate.getDate();
 
           // Populate the lines filling map
                     for (let l = 1; l <= scope.nbLines; l++) {
@@ -240,8 +216,8 @@ function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, d
                     }
 
           // Calculate the left and width offsets for the event's element
-                    const offsetDays = -daysInPeriod(angular.copy(evt.startDate), scope.viewStart, true);
-                    const eventLength = daysInPeriod(angular.copy(evt.endDate), angular.copy(evt.startDate), false) + 1;
+                    const offsetDays = -SchedulerHelperService.daysInPeriod(angular.copy(evt.startDate), scope.viewStart, true);
+                    const eventLength = SchedulerHelperService.daysInPeriod(angular.copy(evt.endDate), angular.copy(evt.startDate), false) + 1;
                     let eventWidth = eventLength * scope.cellWidth;
                     let offsetLeft = Math.floor(offsetDays * scope.cellWidth);
 
@@ -272,12 +248,12 @@ function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, d
                     if (offsetDays < 0) {
                         offsetLeft = 0; // to stick the element to extreme left
                         daysExceed = -offsetDays; // to trim the total element's width
-                        extraClass += 'overLeft '; // to decorate the element's left boundary
+                        extraClass += 'over-left '; // to decorate the element's left boundary
                     }
           // If the event's END date is AFTER the current displayed view
                     if (eEnd > vEnd) {
-                        daysExceed = daysInPeriod(scope.viewEnd, angular.copy(evt.endDate), false);
-                        extraClass += 'overRight '; // to decorate the element's right boundary
+                        daysExceed = SchedulerHelperService.daysInPeriod(scope.viewEnd, angular.copy(evt.endDate), false);
+                        extraClass += 'over-right '; // to decorate the element's right boundary
                     }
           // If the event's END date is BEFORE TODAY (to illustrate the fact it's in the past)
                     if (eEnd < currTime) {
@@ -308,7 +284,7 @@ function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, d
           // Store the number of events in enumDays array, and calculate the line (Y-axis) for the event
                     evt.line = 0;
                     for (let n = 0; n < eventLength; n++) {
-                        const D = addDaysToDate(evt.startDate, n);
+                        const D = SchedulerHelperService.addDaysToDate(evt.startDate, n);
                         const thisDay = $filter('filter')(scope.enumDays, { time: D.getTime() }, true)[0];
 
                         if (thisDay) {
@@ -369,8 +345,8 @@ function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, d
       * Offset view to previous day
       */
             scope.prevDay = function () {
-                scope.viewStart = addDaysToDate(scope.viewStart, -1);
-                scope.viewEnd = addDaysToDate(scope.viewEnd, -1);
+                scope.viewStart = SchedulerHelperService.addDaysToDate(scope.viewStart, -1);
+                scope.viewEnd = SchedulerHelperService.addDaysToDate(scope.viewEnd, -1);
                 scope.renderView();
             };
       /*
@@ -381,15 +357,15 @@ function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, d
                 if (typeof daysToUse === 'undefined') {
                     daysToUse = 15;
                 }
-                scope.viewStart = addDaysToDate(scope.viewStart, -daysToUse);
-                scope.viewEnd = addDaysToDate(scope.viewEnd, -daysToUse);
+                scope.viewStart = SchedulerHelperService.addDaysToDate(scope.viewStart, -daysToUse);
+                scope.viewEnd = SchedulerHelperService.addDaysToDate(scope.viewEnd, -daysToUse);
                 scope.renderView();
             };
       /*
                * Set the start date for view
                */
             scope.setStartView = function (year, month, day) {
-                const date = addDaysToDate(new Date(year, month - 1, day), 0);
+                const date = SchedulerHelperService.addDaysToDate(new Date(year, month - 1, day), 0);
 
                 if (date.getTime() >= scope.viewEnd.getTime()) {
                     scope.throwError(2, 'Aborting view draw: start date would be after end date.');
@@ -402,24 +378,24 @@ function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, d
                * Zoom IN view (-1 day on each side)
                */
             scope.zoomIn = function (step) {
-                if (daysInPeriod(scope.viewStart, scope.viewEnd) <= 2) {
+                if (SchedulerHelperService.daysInPeriod(scope.viewStart, scope.viewEnd) <= 2) {
                     scope.throwError(2, 'Aborting view draw: reached minimum days to show.');
                     return;
                 }
-                scope.viewStart = addDaysToDate(scope.viewStart, Number(step));
-                scope.viewEnd = addDaysToDate(scope.viewEnd, -step);
+                scope.viewStart = SchedulerHelperService.addDaysToDate(scope.viewStart, Number(step));
+                scope.viewEnd = SchedulerHelperService.addDaysToDate(scope.viewEnd, -step);
                 scope.renderView();
             };
       /*
                * Zoom OUT view (+1 day on each side)
                */
             scope.zoomOut = function (step) {
-                if (daysInPeriod(scope.viewStart, scope.viewEnd) >= 365) {
+                if (SchedulerHelperService.daysInPeriod(scope.viewStart, scope.viewEnd) >= 365) {
                     scope.throwError(2, 'Aborting view draw: reached maximum days to show.');
                     return;
                 }
-                scope.viewStart = addDaysToDate(scope.viewStart, -step);
-                scope.viewEnd = addDaysToDate(scope.viewEnd, Number(step));
+                scope.viewStart = SchedulerHelperService.addDaysToDate(scope.viewStart, -step);
+                scope.viewEnd = SchedulerHelperService.addDaysToDate(scope.viewEnd, Number(step));
                 scope.renderView();
             };
       /*
@@ -434,16 +410,16 @@ function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, d
                 if (typeof daysAfter === 'undefined') {
                     daysAfterToUse = 14;
                 }
-                scope.viewStart = addDaysToDate(new Date(), -daysBeforeToUse);
-                scope.viewEnd = addDaysToDate(new Date(), daysAfterToUse);
+                scope.viewStart = SchedulerHelperService.addDaysToDate(new Date(), -daysBeforeToUse);
+                scope.viewEnd = SchedulerHelperService.addDaysToDate(new Date(), daysAfterToUse);
                 scope.renderView();
             };
       /*
                * Offset view to next day
                */
             scope.nextDay = function () {
-                scope.viewStart = addDaysToDate(scope.viewStart, 1);
-                scope.viewEnd = addDaysToDate(scope.viewEnd, 1);
+                scope.viewStart = SchedulerHelperService.addDaysToDate(scope.viewStart, 1);
+                scope.viewEnd = SchedulerHelperService.addDaysToDate(scope.viewEnd, 1);
                 scope.renderView();
             };
       /*
@@ -454,15 +430,15 @@ function SchedulerDirective($window, $document, $timeout, $rootScope, $filter, d
                 if (typeof days === 'undefined') {
                     daysToUse = 15;
                 }
-                scope.viewStart = addDaysToDate(scope.viewStart, daysToUse);
-                scope.viewEnd = addDaysToDate(scope.viewEnd, daysToUse);
+                scope.viewStart = SchedulerHelperService.addDaysToDate(scope.viewStart, daysToUse);
+                scope.viewEnd = SchedulerHelperService.addDaysToDate(scope.viewEnd, daysToUse);
                 scope.renderView();
             };
       /*
                * Set the end date for view
                */
             scope.setEndView = function (year, month, day) {
-                const date = addDaysToDate(new Date(year, month - 1, day), 0);
+                const date = SchedulerHelperService.addDaysToDate(new Date(year, month - 1, day), 0);
 
                 if (date.getTime() <= scope.viewStart.getTime()) {
                     scope.throwError(2, 'Aborting view draw: end date would be before start date.');

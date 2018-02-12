@@ -55,8 +55,9 @@ function PlanttTestController($scope, $timeout) {
     });
 
   // Listen to the "eventOpen" DOM event
-    $scope.$on('eventOpen', (e, event) => {
-        console.log(event);
+    // $scope.$on('eventOpen', (e, event) => {
+    $scope.$on('eventOpen', () => {
+        // console.log(event);
         // alert('Opening event "' + event.title +'"');
     });
 }
