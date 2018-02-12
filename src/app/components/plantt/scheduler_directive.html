@@ -41,28 +41,20 @@
         </thead>
         <tbody>
             <tr ng-repeat="ev in renderedEvents">
-                <td ng-repeat="day in enumDays" title="{{day.title}}" height="{{gridHeight}}"
+                <td ng-repeat="day in enumDays" title="{{day.title}}" ng-style="{'height': rowHeight}"
                   ng-class="{'today': day.today, 'sunday': day.date.getDay() === 0, 'last-day-in-month': day.isLastOfMonth}">
                     <span ng-hide="cellWidth < minCellWidthForHours">{{day.date | date:'shortDate'}}</span>
                     <span ng-show="day.nbEvents > 0 && cellWidth < 100">{{day.nbEvents}}</span>
                     <span ng-show="day.nbEvents > 0 && cellWidth >= 100">({{day.nbEvents}} items)</span>
                 </td>
-                <!--<div class="events-container">-->
-                    <!--<event event-id="{{ev.id}}" ng-style="ev.positioningAttributes" ng-class="[ev.extraClasses]">-->
-                        <!--<label>{{ev.title}}</label>-->
-                    <!--</event>-->
-                <!--</div>-->
             </tr>
         </tbody>
     </table>
-    <!--<div class="events-container">-->
-        <!--<event ng-repeat="ev in renderedEvents" event-id="{{ev.id}}" title="#{{ev.id}} - {{ev.title}}-->
-              <!--Type: {{ev.type}}-->
-              <!--[  {{ev.startDate | date:'short'}} >-->
-              <!--&gt; {{ev.endDate | date:'short'}}  ]"-->
-               <!--ng-style="ev.positioningAttributes"-->
-               <!--ng-class="[ev.extraClasses]">-->
-            <!--<label>{{ev.title}}</label>-->
-        <!--</event>-->
-    <!--</div>-->
+    <div class="events-container">
+        <event ng-repeat="ev in renderedEvents" event-id="{{ev.id}}"
+               ng-style="ev.positioningAttributes"
+               ng-class="[ev.extraClasses]">
+            <label>{{ev.title}}</label>
+        </event>
+    </div>
 </div>

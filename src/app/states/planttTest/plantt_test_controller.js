@@ -3,7 +3,7 @@ import _ from 'lodash';
 /* @ngInject */
 function PlanttTestController($scope, $timeout, SchedulerHelperService) {
     // Basic settings (optional)
-    $scope.eventHeight = 50; // Height of events elements in pixels
+    $scope.eventHeight = 40; // Height of events elements in pixels
     $scope.eventMargin = 10; // Margin above events elements for spacing
     // $scope.nbLines = 6; // Maximum number of lines we can draw in timeline
     $scope.formatDayLong = 'EEEE dd MMMM'; // The JS date format for the long display of dates
