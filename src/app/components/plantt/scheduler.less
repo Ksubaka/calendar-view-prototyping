@@ -1,203 +1,210 @@
 scheduler {
-	position: relative;
-	display: block;
-	width: 100%;
-	background-color: #FFF;
-	border: 1px solid #DDD;
-	min-height: 100px;
-	font-size: 0.9em;
-	margin: 25px 0 25px 0;
-
-  a, a:active, a:hover, a:visited, a:focus, select, select:active, select:hover, select:focus {
-    outline: 0 !important;
-  }
-
-  .h-sep {
-    display: inline-block;
-    margin-left:10px;
-    margin-right: 10px;
-  }
-
-  header {
+    position: relative;
     display: block;
     width: 100%;
-    padding: 5px 15px;
-    background-color: #EEE;
-    line-height: 3em;
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    min-height: 100px;
+    font-size: 0.9em;
+    margin: 25px 0 25px 0;
 
-    .left-actions {
-      float: left;
-      text-align: left;
+    a, a:active, a:hover, a:visited, a:focus, select, select:active, select:hover, select:focus {
+        outline: 0 !important;
     }
 
-    .right-actions {
-      float: right;
-      text-align: right;
+    .h-sep {
+        display: inline-block;
+        margin-left:10px;
+        margin-right: 10px;
     }
 
-    .center-actions {
-      text-align: center;
-    }
-  }
-
-  .timeline-container {
-    width: 100%;
-    z-index: 100;
-
-    table {
-      width: 100%;
-      table-layout: fixed;
-
-      tr {
-        td, th {
-          border-right: 1px solid #BBB;
-          padding: 0; margin: 0;
-          vertical-align: middle;
-          text-align: center;
-          border-bottom: 1px solid #DDD;
-        }
-
-        &.month-line {
-          th {
-            font-size: 1.2em;
-            background-color: #F5F5F5;
-            height: 45px;
-          }
-        }
-
-        &.day-line {
-          th {
-            font-weight: bold;
-            background-color: #F5F5F5;
-          }
-        }
-
-        &.hour-line {
-          th {
-            border-right: 1px solid #E5E5E5;
-            font-weight: normal;
-            font-size: 0.8em;
-
-            &:last-of-type {
-              border: none;
-            }
-          }
-        }
-      }
-
-      tbody {
-        tr {
-          td {
-            color: #BBB;
-            vertical-align: bottom;
-
-            &:nth-child(odd) {
-              background-color: #FAFAFA;
-            }
-
-            &:nth-child(even) {
-              background-color: #FFF;
-            }
-          }
-        }
-      }
-
-      &.hour-grid {
-        width: 100%;
-        height: 100%;
-
-        th {
-          vertical-align: bottom;
-
-          &:last-of-type {
-            border: none;
-          }
-        }
-      }
-
-      .today {
-        background-color: #FFDBCE !important;
-      }
-
-      .sunday {
-        border-right: 1px solid #F88;
-      }
-
-      .last-day-in-month {
-        border-right: 1px solid #F33;
-      }
-    }
-  }
-
-  .events-container {
-    position: absolute;
-    width: 100%;
-    top: 117px;
-    height: auto;
-    z-index: 900;
-
-    event {
-      position: absolute;
-      box-sizing: border-box;
-      height: 50px;
-      background-color: #46b8da;
-      padding: 0;
-      border-radius: 5px;
-      box-shadow: 1px 2px 3px rgba(0,0,0,0.5);
-      z-index: 200;
-
-      label {
+    header {
         display: block;
-        padding: 17px 10%;
-        text-align: center;
-        font-size: 8pt;
-        color: #FFF;
-        margin: 0;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
+        width: 100%;
+        padding: 5px 15px;
+        background-color: #EEE;
+        line-height: 3em;
 
-      &.over-left {
-        border-radius: 0 5px 5px 0;
-      }
+        .left-actions {
+            float: left;
+            text-align: left;
+        }
 
-      &.over-right {
-        border-radius: 5px 0 0 5px;
-      }
+        .right-actions {
+            float: right;
+            text-align: right;
+        }
 
-      &.past {
-        background-color: #888 !important;
-      }
+        .center-actions {
+            text-align: center;
+        }
+    }
 
-      &.current {
-        background: linear-gradient(45deg, transparent, transparent 40px, rgba(255,0,0,0.15) 40px, rgba(255,0,0,0.15) 80px, transparent 80px, transparent);
-        background-size: 120px;
-        background-position: 0 0;
+    .timeline-container {
+        width: 100%;
+        z-index: 100;
 
-        -webkit-animation: animStripes 5s linear infinite;
-        -moz-animation: animStripes 5s linear infinite;
-        -o-animation: animStripes 5s linear infinite;
-        animation: animStripes 5s linear infinite;
-      }
+        table {
+            width: 100%;
+            table-layout: fixed;
+
+            .left-margin {
+
+                &.blank-margin-cell {
+                    border: none;
+                }
+            }
+
+            tr {
+                td, th {
+                    border-right: 1px solid #BBB;
+                    padding: 0; margin: 0;
+                    vertical-align: middle;
+                    text-align: center;
+                    border-bottom: 1px solid #DDD;
+                }
+
+                &.month-line {
+                    th {
+                        font-size: 1.2em;
+                        background-color: #F5F5F5;
+                        height: 45px;
+                    }
+                }
+
+                &.day-line {
+                    th {
+                        font-weight: bold;
+                        background-color: #F5F5F5;
+                    }
+                }
+
+                &.hour-line {
+                    th {
+                        border-right: 1px solid #E5E5E5;
+                        font-weight: normal;
+                        font-size: 0.8em;
+
+                        &:last-of-type {
+                            border: none;
+                        }
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    td {
+                        color: #BBB;
+                        vertical-align: bottom;
+
+                        &:nth-child(odd) {
+                            background-color: #FAFAFA;
+                        }
+
+                        &:nth-child(even) {
+                            background-color: #FFF;
+                        }
+                    }
+                }
+            }
+
+            &.hour-grid {
+                width: 100%;
+                height: 100%;
+
+                th {
+                    vertical-align: bottom;
+
+                    &:last-of-type {
+                        border: none;
+                    }
+                }
+            }
+
+            .today {
+                background-color: #FFDBCE !important;
+            }
+
+            .sunday {
+                border-right: 1px solid #F88;
+            }
+
+            .last-day-in-month {
+                border-right: 1px solid #F33;
+            }
+        }
     }
-    /***** Animations *****/
-    @-webkit-keyframes animStripes {
-      from { background-position: 0 0; }
-      to { background-position: 120px 0; }
+
+    .events-container {
+        position: absolute;
+        width: 100%;
+        top: 117px;
+        height: auto;
+        z-index: 900;
+
+        event {
+            position: absolute;
+            box-sizing: border-box;
+            height: 50px;
+            background-color: #46b8da;
+            padding: 0;
+            border-radius: 5px;
+            box-shadow: 1px 2px 3px rgba(0,0,0,0.5);
+            z-index: 200;
+
+            label {
+                display: block;
+                padding: 17px 10%;
+                text-align: center;
+                font-size: 8pt;
+                color: #FFF;
+                margin: 0;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            &.over-left {
+                border-radius: 0 5px 5px 0;
+            }
+
+            &.over-right {
+                border-radius: 5px 0 0 5px;
+            }
+
+            &.past {
+                background-color: #888 !important;
+            }
+
+            &.current {
+                background: linear-gradient(45deg, transparent, transparent 40px, rgba(255,0,0,0.15) 40px, rgba(255,0,0,0.15) 80px, transparent 80px, transparent);
+                background-size: 120px;
+                background-position: 0 0;
+
+                -webkit-animation: animStripes 5s linear infinite;
+                -moz-animation: animStripes 5s linear infinite;
+                -o-animation: animStripes 5s linear infinite;
+                animation: animStripes 5s linear infinite;
+            }
+        }
+        /***** Animations *****/
+        @-webkit-keyframes animStripes {
+            from { background-position: 0 0; }
+            to { background-position: 120px 0; }
+        }
+        @-moz-keyframes animStripes {
+            from { background-position: 0 0; }
+            to { background-position: 120px 0; }
+        }
+        @-o-keyframes animStripes {
+            from { background-position: 0 0; }
+            to { background-position: 120px 0; }
+        }
+        @keyframes animStripes {
+            from { background-position: 0 0; }
+            to { background-position: 120px 0; }
+        }
     }
-    @-moz-keyframes animStripes {
-      from { background-position: 0 0; }
-      to { background-position: 120px 0; }
-    }
-    @-o-keyframes animStripes {
-      from { background-position: 0 0; }
-      to { background-position: 120px 0; }
-    }
-    @keyframes animStripes {
-      from { background-position: 0 0; }
-      to { background-position: 120px 0; }
-    }
-  }
 }
 

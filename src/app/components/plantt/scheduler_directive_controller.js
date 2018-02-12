@@ -14,70 +14,25 @@ function SchedulerDirectiveController($scope, $window, $document, $timeout, date
      * OPTIONS VALUES
      * Can be overwritten in app controller
      */
-    if (!$scope.viewStart) { // Firt day to display in view. Default: today minus 7 days
-        $scope.viewStart = SchedulerHelperService.addDaysToDate($scope.currDate, -7);
-    }
-    if (!$scope.viewEnd) { // Last day to display in view. Default: today plus 14 days
-        $scope.viewEnd = SchedulerHelperService.addDaysToDate($scope.currDate, 14);
-    }
-    if (!$scope.eventHeight) {
-        $scope.eventHeight = 50;
-    } // Height of events elements in pixels
-    if (!$scope.eventMargin) {
-        $scope.eventMargin = 10;
-    } // Margin above events elements for spacing
+    $scope.viewStart = $scope.viewStart || SchedulerHelperService.addDaysToDate($scope.currDate, -7);
+    $scope.viewEnd = $scope.viewEnd || SchedulerHelperService.addDaysToDate($scope.currDate, 14);
+    $scope.eventHeight = $scope.eventHeight || 50;
+    $scope.eventMargin = $scope.eventMargin || 10;
+    $scope.leftColumnWidth = $scope.leftColumnWidth || 200;
     $scope.useLock = true;
     $scope.lock = true;
     // Number of days between today and the start date of events for the automatic lock to be effective
-    if (!$scope.formatDayLong) {
-        $scope.formatDayLong = 'EEEE MMMM dd';
-    }
+    $scope.formatDayLong = $scope.formatDayLong || 'EEEE MMMM dd';
     // The JS date format for the long display of dates (see https://docs.angularjs.org/api/ng/filter/date)
-    if (!$scope.formatDayShort) {
-        $scope.formatDayShort = 'yyyy-MM-dd';
-    }
+    $scope.formatDayShort = $scope.formatDayShort || 'yyyy-MM-dd';
     // The JS date format for the short display of dates
-    if (!$scope.formatMonth) {
-        $scope.formatMonth = 'MMMM yyyy';
-    } // The JS date format for the month display in header
-    if (typeof $scope.useHours === 'undefined') {
-        $scope.useHours = false;
-    }
-    // To specify the use of hours ('true' to display hourly grid and don't force events hours to 12:00)
-    if (typeof $scope.dayStartHour === 'undefined') {
-        $scope.dayStartHour = 8;
-    } // The hour number at which the day begins (default 08:00)
-    if (typeof $scope.dayEndHour === 'undefined') {
-        $scope.dayEndHour = 20;
-    } // The hour number at which the day ends (default 20:00)
-    /* END OPTIONS VALUES */
-
-    // Options security
-    $scope.nbLines += 1; // Add one line on the grid to be sure
-    if ($scope.dayStartHour < 0) {
-        $scope.dayStartHour = 0;
-    } // Limit start hour of day to midnight
-    if ($scope.dayEndHour > 23) {
-        $scope.dayEndHour = 23;
-    } // Limit end hour of day to 23:00
-    if ($scope.dayStartHour >= $scope.dayEndHour) { // Prevent errors for hours grid
-        $scope.dayStartHour = 6;
-        $scope.dayEndHour = 20;
-    }
-
-    // View essentials
-    $scope.nbHours = ($scope.dayEndHour + 1) - $scope.dayStartHour; // Number of hours displayed in one day
-    $scope.minCellWidthForHours = (($scope.dayEndHour + 1) - $scope.dayStartHour) * 13; // Minimum width in pixels for the hours grid to be displayed
+    $scope.formatMonth = $scope.formatMonth || 'MMMM yyyy';
 
     $scope.renderView = function () {
-        let currTime = $scope.currDate.getTime();
-
-        if ($scope.useHours) {
-            currTime = (new Date()).getTime();
-        }
+        const currTime = $scope.currDate.getTime();
         $scope.enumDays = []; // List of objects describing all days within the view.
         $scope.enumMonths = []; // List of objects describing all months within the view.
-        $scope.gridWidth = $document.find('tbody').prop('offsetWidth'); // Width of the rendered grid
+        $scope.gridWidth = $document.find('tbody').prop('offsetWidth') - $scope.leftColumnWidth; // Width of the rendered grid
         $scope.viewPeriod = SchedulerHelperService.daysInPeriod($scope.viewStart, $scope.viewEnd, false); // Number of days in period of the view
         $scope.cellWidth = $scope.gridWidth / ($scope.viewPeriod + 1); // Width of the days cells of the grid
         $scope.linesFill = {}; // Empty the lines filling map
@@ -190,7 +145,7 @@ function SchedulerDirectiveController($scope, $window, $document, $timeout, date
 
             // Place and scale the event's element in DOM
             evt.positioningAttributes = {
-                left: `${Math.floor(offsetLeft)}px`,
+                left: `${Math.floor(offsetLeft) + $scope.leftColumnWidth}px`,
                 width: `${eventWidth - (daysExceed * $scope.cellWidth)}px`,
                 top: `${$scope.renderedEvents.length * $scope.rowHeight}px`,
                 height: `${$scope.eventHeight}px`,

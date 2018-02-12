@@ -14,7 +14,8 @@ function SchedulerHelperService() {
 
         date1.setHours(12); date1.setMinutes(0); date1.setSeconds(0); date1.setMilliseconds(0);
         date2.setHours(12); date2.setMinutes(0); date2.setSeconds(0); date2.setMilliseconds(0);
-        const result = parseInt((date2.getTime() - date1.getTime()) / oneDay, 10);
+        const daysCount = `${(date2.getTime() - date1.getTime()) / oneDay}`;
+        const result = parseInt(daysCount, 10);
 
         if (wantDiff) { return result; } return Math.abs(result);
     }

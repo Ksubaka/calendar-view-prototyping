@@ -30,9 +30,11 @@
     <table>
         <thead scheduler-header>
         <tr class="month-line">
+            <th class="left-margin blank-margin-cell" ng-style="{'width': leftColumnWidth}"></th>
             <th ng-repeat="month in enumMonths" colspan="{{month.numDays}}" class="month">{{month.name}}</th>
         </tr>
         <tr class="day-line">
+            <th class="left-margin" ng-style="{'width': leftColumnWidth}"></th>
             <th ng-repeat="day in enumDays" title="{{day.title}}"
                 ng-class="{'today': day.today, 'sunday': day.date.getDay() === 0, 'last-day-in-month': day.isLastOfMonth}">
                 <span ng-show="cellWidth > 18">{{day.num}}</span>
@@ -41,9 +43,9 @@
         </thead>
         <tbody>
             <tr ng-repeat="ev in renderedEvents">
+                <td class="left-margin" ng-style="{'width': leftColumnWidth}"></td>
                 <td ng-repeat="day in enumDays" title="{{day.title}}" ng-style="{'height': rowHeight}"
                   ng-class="{'today': day.today, 'sunday': day.date.getDay() === 0, 'last-day-in-month': day.isLastOfMonth}">
-                    <span ng-hide="cellWidth < minCellWidthForHours">{{day.date | date:'shortDate'}}</span>
                     <span ng-show="day.nbEvents > 0 && cellWidth < 100">{{day.nbEvents}}</span>
                     <span ng-show="day.nbEvents > 0 && cellWidth >= 100">({{day.nbEvents}} items)</span>
                 </td>

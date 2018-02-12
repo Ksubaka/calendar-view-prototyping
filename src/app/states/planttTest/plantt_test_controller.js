@@ -5,6 +5,7 @@ function PlanttTestController($scope, $timeout, SchedulerHelperService) {
     // Basic settings (optional)
     $scope.eventHeight = 40; // Height of events elements in pixels
     $scope.eventMargin = 10; // Margin above events elements for spacing
+    $scope.leftColumnWidth = 200;
     // $scope.nbLines = 6; // Maximum number of lines we can draw in timeline
     $scope.formatDayLong = 'EEEE dd MMMM'; // The JS date format for the long display of dates
     $scope.formatDayShort = 'dd/MM/yyyy'; // The JS date format for the short display of dates
