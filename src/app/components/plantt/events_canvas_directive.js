@@ -5,8 +5,8 @@ function EventsCanvasDirective($document, $rootScope, $timeout, SchedulerHelperS
     return {
         restrict: 'A',
         link(scope, element) {
-        // Click-drag on canvas emits the event "periodSelect" to all other scopes
-        // Useful to add events on the timeline
+            // Click-drag on canvas emits the event "periodSelect" to all other scopes
+            // Useful to add events on the timeline
             const eventHelper = $document.find('eventhelper');
             let dragInit = false;
             let startWidth = 0;
@@ -45,7 +45,6 @@ function EventsCanvasDirective($document, $rootScope, $timeout, SchedulerHelperS
                 }
                 if (selStart.getTime() < selEnd.getTime()) {
                     $rootScope.$broadcast('periodSelect', { start: selStart, end: selEnd });
-                    scope.throwError(3, "The DOM event 'periodSelect' was emitted in rootScope.");
                 }
                 dragInit = false;
             }
@@ -92,7 +91,6 @@ function EventsCanvasDirective($document, $rootScope, $timeout, SchedulerHelperS
 
                 if (scope.useHours) { selectedDate.setHours(scope.dayStartHour); }
                 $rootScope.$broadcast('daySelect', selectedDate);
-                scope.throwError(3, "The DOM event 'daySelect' was emitted in rootScope.");
             });
 
             element.on('mousedown', grabGridStart);

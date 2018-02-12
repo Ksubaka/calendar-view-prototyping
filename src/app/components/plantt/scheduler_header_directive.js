@@ -38,7 +38,7 @@ function EventsCanvasDirective($document, $timeout, SchedulerHelperService) {
                 $document.on('mouseup', grabHeadEnd);
             }
 
-        // Click-drag on grid header to move the view left or right
+            // Click-drag on grid header to move the view left or right
             element.on('mousedown', grabHeadStart);
         },
     };
