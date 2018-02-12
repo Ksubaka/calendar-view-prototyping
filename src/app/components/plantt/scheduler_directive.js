@@ -5,6 +5,12 @@ function SchedulerDirective() {
     return {
         restrict: 'E',
         templateUrl,
+        scope: {
+            events: '=',
+            viewStart: '=?',
+            viewEnd: '=?',
+
+        },
         controller: 'SchedulerDirectiveController',
     };
 }

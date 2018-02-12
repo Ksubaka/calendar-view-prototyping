@@ -2,31 +2,41 @@ import _ from 'lodash';
 import angular from 'angular';
 
 /* @ngInject */
-function SchedulerDirectiveController($scope, $window, $document, $timeout, dateFilter, SchedulerHelperService) {
-    // Create the list of events variable, if not present in the app controller
-    if (!$scope.events) {
-        $scope.events = [];
-    }
+function SchedulerDirectiveController(
+    $scope,
+    $window,
+    $document,
+    $timeout,
+    dateFilter,
+    SchedulerHelperService,
+    $compile,
+    $sce,
+) {
+    $scope.eventHeight = 40;
+    $scope.eventMargin = 10;
+    $scope.leftColumnWidth = 200;
+    // $scope.nbLines = 6; // Maximum number of lines we can draw in timeline
+    $scope.formatDayLong = 'EEEE dd MMMM'; // The JS date format for the long display of dates
+    $scope.formatDayShort = 'dd/MM/yyyy'; // The JS date format for the short display of dates
+    $scope.formatMonth = 'MMMM yyyy'; // The JS date format for the month display in header
+    $scope.events = $scope.events || [];
     // Today's date
     $scope.currDate = SchedulerHelperService.addDaysToDate(new Date(), 0);
 
-    /*
-     * OPTIONS VALUES
-     * Can be overwritten in app controller
-     */
     $scope.viewStart = $scope.viewStart || SchedulerHelperService.addDaysToDate($scope.currDate, -7);
     $scope.viewEnd = $scope.viewEnd || SchedulerHelperService.addDaysToDate($scope.currDate, 14);
-    $scope.eventHeight = $scope.eventHeight || 50;
-    $scope.eventMargin = $scope.eventMargin || 10;
-    $scope.leftColumnWidth = $scope.leftColumnWidth || 200;
-    $scope.useLock = true;
-    $scope.lock = true;
-    // Number of days between today and the start date of events for the automatic lock to be effective
     $scope.formatDayLong = $scope.formatDayLong || 'EEEE MMMM dd';
-    // The JS date format for the long display of dates (see https://docs.angularjs.org/api/ng/filter/date)
     $scope.formatDayShort = $scope.formatDayShort || 'yyyy-MM-dd';
-    // The JS date format for the short display of dates
     $scope.formatMonth = $scope.formatMonth || 'MMMM yyyy';
+
+    function getTooltipHtml(event) {
+        const html = `<div style="text-align: left">
+            <h4>${event.name}</h4>
+            <p>${dateFilter(event.startDate, $scope.formatDayLong)} - ${dateFilter(event.endDate, $scope.formatDayLong)}</p>
+            <p style="text-transform: capitalize">${event.status}</p>
+        </div>`;
+        return $sce.trustAsHtml(html);
+    }
 
     $scope.renderView = function () {
         const currTime = $scope.currDate.getTime();
@@ -35,8 +45,7 @@ function SchedulerDirectiveController($scope, $window, $document, $timeout, date
         $scope.gridWidth = $document.find('tbody').prop('offsetWidth') - $scope.leftColumnWidth; // Width of the rendered grid
         $scope.viewPeriod = SchedulerHelperService.daysInPeriod($scope.viewStart, $scope.viewEnd, false); // Number of days in period of the view
         $scope.cellWidth = $scope.gridWidth / ($scope.viewPeriod + 1); // Width of the days cells of the grid
-        $scope.linesFill = {}; // Empty the lines filling map
-        $scope.renderedEvents = []; // Empty the rendered events list
+        $scope.renderedEvents = [];
 
         // First Loop: on all view's days, to define the grid
         let lastMonth = -1;
@@ -48,14 +57,6 @@ function SchedulerDirectiveController($scope, $window, $document, $timeout, date
             const dayDate = SchedulerHelperService.addDaysToDate($scope.viewStart, d);
             const today = $scope.currDate.getTime() === dayDate.getTime();
             const isLastOfMonth = SchedulerHelperService.daysInMonth(dayDate) === dayDate.getDate();
-
-            // Populate the lines filling map
-            for (let l = 1; l <= $scope.nbLines; l++) {
-                $scope.linesFill[l] = [];
-                for (let ld = 0; ld <= $scope.viewPeriod; ld++) {
-                    $scope.linesFill[l].push(false);
-                }
-            }
 
             // Populate the list of all days
             $scope.enumDays.push({
@@ -87,7 +88,7 @@ function SchedulerDirectiveController($scope, $window, $document, $timeout, date
         $scope.rowHeight = ($scope.eventHeight + ($scope.eventMargin * 2));
 
         // Second loop: Filter and calculate the placement of all events to be rendered
-        _.forEach($scope.events, (event) => {
+        _.forEach($scope.events, (event, index) => {
             const evt = angular.copy(event);
             const eStart = evt.startDate.getTime();
             const eEnd = evt.endDate.getTime();
@@ -117,7 +118,7 @@ function SchedulerDirectiveController($scope, $window, $document, $timeout, date
             let offsetLeft = Math.floor(offsetDays * $scope.cellWidth);
 
             let daysExceed = 0;
-            let extraClass = `${evt.type} `;
+            let extraClass = `${evt.status} `;
             // If the event's START date is BEFORE the current displayed view
             if (offsetDays < 0) {
                 offsetLeft = 0; // to stick the element to extreme left
@@ -134,31 +135,27 @@ function SchedulerDirectiveController($scope, $window, $document, $timeout, date
                 extraClass += 'past ';
             }
 
-            evt.lock = true;
-
             // If the event is CURRENTLY active (over today)
             if (eStart <= currTime && eEnd >= currTime) {
                 extraClass += 'current '; // to illustrate the fact it's currently active
             }
-            // Add some classes to the element
             evt.extraClasses = extraClass;
 
             // Place and scale the event's element in DOM
             evt.positioningAttributes = {
                 left: `${Math.floor(offsetLeft) + $scope.leftColumnWidth}px`,
                 width: `${eventWidth - (daysExceed * $scope.cellWidth)}px`,
-                top: `${$scope.renderedEvents.length * $scope.rowHeight}px`,
+                top: `${index * $scope.rowHeight}px`,
                 height: `${$scope.eventHeight}px`,
             };
 
-            // Actually RENDER the event on the timeline
+            evt.tooltipHtml = getTooltipHtml(evt);
+
             $scope.renderedEvents.push(evt);
             return null;
         });
-        // Compute the view's height to fit all elements (with margins)
     };
 
-    // Call the renderer for the first time
     $scope.renderView();
 
     // Call the renderer when window is resized
@@ -230,15 +227,10 @@ function SchedulerDirectiveController($scope, $window, $document, $timeout, date
     /*
      * Center view to current day (defaults -7, +14 days)
      */
-    $scope.centerView = function (daysBefore, daysAfter) {
-        let daysBeforeToUse = daysBefore;
-        let daysAfterToUse = daysAfter;
-        if (typeof daysBefore === 'undefined') {
-            daysBeforeToUse = 7;
-        }
-        if (typeof daysAfter === 'undefined') {
-            daysAfterToUse = 14;
-        }
+    $scope.centerView = function () {
+        const currentDaysInView = SchedulerHelperService.daysInPeriod($scope.viewStart, $scope.viewEnd);
+        const daysBeforeToUse = Math.floor(currentDaysInView / 2);
+        const daysAfterToUse = Math.ceil(currentDaysInView / 2);
         $scope.viewStart = SchedulerHelperService.addDaysToDate(new Date(), -daysBeforeToUse);
         $scope.viewEnd = SchedulerHelperService.addDaysToDate(new Date(), daysAfterToUse);
         $scope.renderView();

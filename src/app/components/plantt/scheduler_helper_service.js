@@ -17,7 +17,7 @@ function SchedulerHelperService() {
         const daysCount = `${(date2.getTime() - date1.getTime()) / oneDay}`;
         const result = parseInt(daysCount, 10);
 
-        if (wantDiff) { return result; } return Math.abs(result);
+        return wantDiff ? result : Math.abs(result);
     }
 
     function daysInMonth(date) {

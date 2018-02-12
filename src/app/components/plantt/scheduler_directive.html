@@ -15,7 +15,7 @@
         </div>
         <div class="h-sep">
             <div class="btn btn-default btn-sm" ng-click="zoomIn(1)">Zoom In</div>
-            <div class="btn btn-default btn-sm" ng-click="centerView(0,2)">Center on today</div>
+            <div class="btn btn-default btn-sm" ng-click="centerView()">Center on today</div>
             <div class="btn btn-default btn-sm" ng-click="zoomOut(1)">Zoom Out</div>
         </div>
         <div class="h-sep">
@@ -42,8 +42,10 @@
         </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="ev in renderedEvents">
-                <td class="left-margin" ng-style="{'width': leftColumnWidth}"></td>
+            <tr ng-repeat="ev in events">
+                <td class="left-margin" ng-style="{'width': leftColumnWidth}">
+                    {{ev.name}}
+                </td>
                 <td ng-repeat="day in enumDays" title="{{day.title}}" ng-style="{'height': rowHeight}"
                   ng-class="{'today': day.today, 'sunday': day.date.getDay() === 0, 'last-day-in-month': day.isLastOfMonth}">
                     <span ng-show="day.nbEvents > 0 && cellWidth < 100">{{day.nbEvents}}</span>
@@ -55,8 +57,11 @@
     <div class="events-container">
         <event ng-repeat="ev in renderedEvents" event-id="{{ev.id}}"
                ng-style="ev.positioningAttributes"
-               ng-class="[ev.extraClasses]">
-            <label>{{ev.title}}</label>
+               ng-class="[ev.extraClasses]"
+               uib-tooltip-html="ev.tooltipHtml"
+               tooltip-trigger="'click outsideClick'"
+               tooltip-placement="center">
+            <label>{{ev.name}}</label>
         </event>
     </div>
 </div>
