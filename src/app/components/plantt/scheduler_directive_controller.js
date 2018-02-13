@@ -257,6 +257,10 @@ function SchedulerDirectiveController(
         $scope.viewEnd = date;
         $scope.renderView();
     };
+
+    $scope.isWeekend = function (day) {
+        return day.date.getDay() === 0 || day.date.getDay() === 6;
+    };
 }
 
 module.exports = SchedulerDirectiveController;

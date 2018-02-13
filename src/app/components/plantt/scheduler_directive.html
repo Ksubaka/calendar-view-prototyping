@@ -36,7 +36,7 @@
         <tr class="day-line">
             <th class="left-margin" ng-style="{'width': leftColumnWidth}"></th>
             <th ng-repeat="day in enumDays" title="{{day.title}}"
-                ng-class="{'today': day.today, 'sunday': day.date.getDay() === 0, 'last-day-in-month': day.isLastOfMonth}">
+                ng-class="{'today': day.today, 'weekend': isWeekend(day), 'last-day-in-month': day.isLastOfMonth}">
                 <span ng-show="cellWidth > 18">{{day.num}}</span>
             </th>
         </tr>
@@ -47,7 +47,7 @@
                     {{ev.name}}
                 </td>
                 <td ng-repeat="day in enumDays" title="{{day.title}}" ng-style="{'height': rowHeight}"
-                  ng-class="{'today': day.today, 'sunday': day.date.getDay() === 0, 'last-day-in-month': day.isLastOfMonth}">
+                  ng-class="{'today': day.today, 'weekend': isWeekend(day), 'last-day-in-month': day.isLastOfMonth}">
                     <span ng-show="day.nbEvents > 0 && cellWidth < 100">{{day.nbEvents}}</span>
                     <span ng-show="day.nbEvents > 0 && cellWidth >= 100">({{day.nbEvents}} items)</span>
                 </td>
