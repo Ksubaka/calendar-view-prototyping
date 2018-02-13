@@ -1,0 +1,85 @@
+@import (reference) '../../../public/less/colors.less';
+
+.scheduler-event {
+    position: absolute;
+    box-sizing: border-box;
+    height: 50px;
+    background-color: #46b8da;
+    padding: 0;
+    border-radius: 5px;
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.5);
+    z-index: 200;
+
+    label {
+        display: block;
+        padding: 10px 10%;
+        text-align: center;
+        font-size: 10pt;
+        color: #FFF;
+        margin: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        user-select: none;
+    }
+
+    &.over-left {
+        border-radius: 0 5px 5px 0;
+    }
+
+    &.over-right {
+        border-radius: 5px 0 0 5px;
+    }
+
+    &.past {
+        background-color: #888 !important;
+    }
+
+    &.current {
+        background: linear-gradient(135deg, transparent, transparent 40px, rgba(255,0,0,0.45) 40px, rgba(255,0,0,0.45) 80px, transparent 80px, transparent 120px);
+        background-size: 120px 100%;
+        animation: animStripes 5s linear infinite;
+
+        label {
+            color: #434343;
+        }
+    }
+
+    &.live, &.starting {
+        background-color: darken(@colorCampaignStateLive, 10%);
+    }
+    &.draft {
+        background-color: darken(@colorCampaignStateDraft, 10%);
+    }
+    &.ready {
+        background-color: darken(@colorCampaignStateReady, 10%);
+    }
+    &.problem {
+        background-color: darken(@colorCampaignStateProblem, 10%);
+    }
+    &.paused {
+        background-color: darken(@colorCampaignStatePause, 10%);
+    }
+    &.completing, &.completed {
+        background-color: darken(@colorCampaignStateComplete, 10%);
+    }
+
+    @-webkit-keyframes animStripes {
+        from { background-position: 0 0; }
+        to { background-position: 120px 0; }
+    }
+    @-moz-keyframes animStripes {
+        from { background-position: 0 0; }
+        to { background-position: 120px 0; }
+    }
+    @-o-keyframes animStripes {
+        from { background-position: 0 0; }
+        to { background-position: 120px 0; }
+    }
+    @keyframes animStripes {
+        from { background-position: 0 0; }
+        to { background-position: 120px 0; }
+    }
+}
+
+

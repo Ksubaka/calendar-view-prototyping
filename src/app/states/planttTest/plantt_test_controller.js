@@ -37,14 +37,14 @@ function PlanttTestController($scope, $timeout, SchedulerHelperService) {
         },
         {
             id: 5,
-            name: 'Old one',
+            name: 'Old campaign',
             status: 'completed',
             startDate: SchedulerHelperService.addDaysToDate(now, -18),
             endDate: SchedulerHelperService.addDaysToDate(now, -6),
         },
         {
             id: 6,
-            name: 'Outdated event',
+            name: 'Outdated campaign',
             status: 'completed',
             startDate: SchedulerHelperService.addDaysToDate(now, -4),
             endDate: SchedulerHelperService.addDaysToDate(now, -2),

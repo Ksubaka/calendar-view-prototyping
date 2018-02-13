@@ -55,13 +55,8 @@
         </tbody>
     </table>
     <div class="events-container">
-        <event ng-repeat="ev in renderedEvents" event-id="{{ev.id}}"
-               ng-style="ev.positioningAttributes"
-               ng-class="[ev.extraClasses]"
-               uib-tooltip-html="ev.tooltipHtml"
-               tooltip-trigger="'click outsideClick'"
-               tooltip-placement="center">
-            <label>{{ev.name}}</label>
-        </event>
+        <scheduler-event ng-repeat="re in renderedEvents"
+                         event="re">
+        </scheduler-event>
     </div>
 </div>

@@ -9,8 +9,6 @@ function SchedulerDirectiveController(
     $timeout,
     dateFilter,
     SchedulerHelperService,
-    $compile,
-    $sce,
 ) {
     $scope.eventHeight = 40;
     $scope.eventMargin = 10;
@@ -28,15 +26,6 @@ function SchedulerDirectiveController(
     $scope.formatDayLong = $scope.formatDayLong || 'EEEE MMMM dd';
     $scope.formatDayShort = $scope.formatDayShort || 'yyyy-MM-dd';
     $scope.formatMonth = $scope.formatMonth || 'MMMM yyyy';
-
-    function getTooltipHtml(event) {
-        const html = `<div style="text-align: left">
-            <h4>${event.name}</h4>
-            <p>${dateFilter(event.startDate, $scope.formatDayLong)} - ${dateFilter(event.endDate, $scope.formatDayLong)}</p>
-            <p style="text-transform: capitalize">${event.status}</p>
-        </div>`;
-        return $sce.trustAsHtml(html);
-    }
 
     $scope.renderView = function () {
         const currTime = $scope.currDate.getTime();
@@ -148,8 +137,6 @@ function SchedulerDirectiveController(
                 top: `${index * $scope.rowHeight}px`,
                 height: `${$scope.eventHeight}px`,
             };
-
-            evt.tooltipHtml = getTooltipHtml(evt);
 
             $scope.renderedEvents.push(evt);
             return null;

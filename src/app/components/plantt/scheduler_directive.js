@@ -1,4 +1,5 @@
 import templateUrl from './scheduler_directive.html';
+import css from './scheduler.less';
 
 /* @ngInject */
 function SchedulerDirective() {
@@ -9,7 +10,6 @@ function SchedulerDirective() {
             events: '=',
             viewStart: '=?',
             viewEnd: '=?',
-
         },
         controller: 'SchedulerDirectiveController',
     };
