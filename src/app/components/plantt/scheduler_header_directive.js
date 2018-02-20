@@ -1,6 +1,6 @@
 
 /* @ngInject */
-function EventsCanvasDirective($document, $timeout, SchedulerHelperService) {
+function SchedulerHeaderDirective($document, $timeout, SchedulerHelperService) {
     return {
         restrict: 'A',
         link(scope, element) {
@@ -44,4 +44,4 @@ function EventsCanvasDirective($document, $timeout, SchedulerHelperService) {
     };
 }
 
-module.exports = EventsCanvasDirective;
+module.exports = SchedulerHeaderDirective;

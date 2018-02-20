@@ -11,6 +11,11 @@ function SchedulerDirective() {
             viewStart: '=?',
             viewEnd: '=?',
         },
+        link: (scope, elem) => {
+            scope.getGridWidth = function () {
+                return elem.find('.liner-table').prop('offsetWidth') - scope.leftColumnWidth;
+            };
+        },
         controller: 'SchedulerDirectiveController',
     };
 }

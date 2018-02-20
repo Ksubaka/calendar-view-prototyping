@@ -9,6 +9,7 @@ function SchedulerEventDirective() {
         templateUrl,
         scope: {
             event: '=',
+            day: '=',
         },
         controller: 'SchedulerEventDirectiveController',
     };

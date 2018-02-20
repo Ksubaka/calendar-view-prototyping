@@ -5,6 +5,7 @@ function SchedulerEventDirectiveController(
     dateFilter,
     $compile,
     $sce,
+    SchedulerHelperService,
 ) {
     function getTooltipHtml(event) {
         const html = `<div style="text-align: left">
@@ -18,6 +19,12 @@ function SchedulerEventDirectiveController(
     $scope.$watch('event', (newVal) => {
         $scope.tooltipHtml = getTooltipHtml(newVal);
     });
+
+    $scope.isDayInMiddleOfEvent = SchedulerHelperService.isDayInMiddleOfEvent;
+    $scope.isDayAtStartOfEvent = SchedulerHelperService.isDayAtStartOfEvent;
+    $scope.isDayAtEndOfEvent = SchedulerHelperService.isDayAtEndOfEvent;
+    $scope.isEventDay = SchedulerHelperService.isEventDay;
+    $scope.getEventLengthInDays = SchedulerHelperService.getEventLengthInDays;
 }
 
 module.exports = SchedulerEventDirectiveController;

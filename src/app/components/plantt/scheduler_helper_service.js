@@ -30,6 +30,25 @@ function SchedulerHelperService() {
         addDaysToDate,
         daysInPeriod,
         daysInMonth,
+        isDayInMiddleOfEvent(day, event) {
+            return day.date > event.startDate && day.date < event.endDate;
+        },
+        isDayAtStartOfEvent(day, event) {
+            return day.date.getTime() === event.startDate.getTime();
+        },
+        isDayAtEndOfEvent(day, event) {
+            return day.date.getTime() === event.endDate.getTime();
+        },
+        isEventDay(day, event) {
+            return day.date > event.startDate && day.date < event.endDate;
+        },
+        isCurrentDate(event) {
+            const currentDate = new Date();
+            return event.startDate.getTime() <= currentDate.getTime() && event.endDate.getTime() >= currentDate.getTime();
+        },
+        getEventLengthInDays(event) {
+            return daysInPeriod(event.startDate, event.endDate, false) + 1;
+        },
     };
 }
 
