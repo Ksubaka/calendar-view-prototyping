@@ -5,7 +5,7 @@ import angular from 'angular';
 import '../public/less/app.less';
 
 const planttState = require('./states/planttTest');
-const planttScheduler = require('./components/plantt');
+const planttScheduler = require('./components/scheduler');
 const uiBootstrap = require('angular-ui-bootstrap');
 
 const libDependencies = [
