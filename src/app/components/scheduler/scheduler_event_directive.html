@@ -1,4 +1,4 @@
-<div class="scheduler-event" ng-style="{'width': (getEventLengthInDays(event) * 100) + '%'}">
+<div class="scheduler-event" ng-style="{'width': (getEventLengthInViewInDays(event, viewStart) * 100) + '%'}">
     <div uib-tooltip-html="tooltipHtml"
          tooltip-trigger="'click outsideClick'"
          tooltip-placement="center"

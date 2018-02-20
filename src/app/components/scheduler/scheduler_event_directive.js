@@ -10,6 +10,7 @@ function SchedulerEventDirective() {
         scope: {
             event: '=',
             day: '=',
+            viewStart: '=',
         },
         controller: 'SchedulerEventDirectiveController',
     };

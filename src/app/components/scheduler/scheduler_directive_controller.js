@@ -25,55 +25,53 @@ function SchedulerDirectiveController(
     $scope.formatMonth = $scope.formatMonth || 'MMMM yyyy';
 
     $scope.renderView = function () {
-        $scope.enumDays = []; // List of objects describing all days within the view.
-        $scope.enumMonths = []; // List of objects describing all months within the view.
-        $scope.viewPeriod = SchedulerHelperService.daysInPeriod($scope.viewStart, $scope.viewEnd, false); // Number of days in period of the view
-        $scope.cellWidth = $scope.getGridWidth() / ($scope.viewPeriod + 1); // Width of the days cells of the grid
-        $scope.rowHeight = (eventHeight + (eventMargin * 2));
-        $scope.gridHeight = $scope.rowHeight * $scope.events.length;
-        // First Loop: on all view's days, to define the grid
-        let lastMonth = -1;
-        let monthNumDays = 1;
-        let nbMonths = 0;
+        $timeout(() => {
+            $scope.enumDays = []; // List of objects describing all days within the view.
+            $scope.enumMonths = []; // List of objects describing all months within the view.
+            $scope.viewPeriod = SchedulerHelperService.daysInPeriod($scope.viewStart, $scope.viewEnd, false); // Number of days in period of the view
+            $scope.cellWidth = $scope.getGridWidth() / ($scope.viewPeriod + 1); // Width of the days cells of the grid
+            $scope.rowHeight = (eventHeight + (eventMargin * 2));
+            $scope.gridHeight = $scope.rowHeight * $scope.events.length;
+            // First Loop: on all view's days, to define the grid
+            let lastMonth = -1;
+            let monthNumDays = 1;
+            let nbMonths = 0;
 
-        for (let d = 0; d <= $scope.viewPeriod; d++) {
-            const dayDate = SchedulerHelperService.addDaysToDate($scope.viewStart, d);
-            const today = currDate.getTime() === dayDate.getTime();
-            const isLastOfMonth = SchedulerHelperService.daysInMonth(dayDate) === dayDate.getDate();
+            for (let d = 0; d <= $scope.viewPeriod; d++) {
+                const dayDate = SchedulerHelperService.addDaysToDate($scope.viewStart, d);
+                const today = currDate.getTime() === dayDate.getTime();
+                const isLastOfMonth = SchedulerHelperService.daysInMonth(dayDate) === dayDate.getDate();
 
-            // Populate the list of all days
-            $scope.enumDays.push({
-                num: dateFilter(dayDate, 'dd'),
-                offset: d,
-                date: dayDate,
-                time: dayDate.getTime(),
-                title: dateFilter(dayDate, $scope.formatDayLong),
-                nbEvents: 0,
-                today,
-                isLastOfMonth,
-            });
-            // Populate the list of all months
-            monthNumDays += 1;
-            if (lastMonth !== dayDate.getMonth()) {
-                $scope.enumMonths.push({
-                    num: dayDate.getMonth(),
-                    name: dateFilter(dayDate, $scope.formatMonth),
+                // Populate the list of all days
+                $scope.enumDays.push({
+                    num: dateFilter(dayDate, 'dd'),
+                    offset: d,
+                    date: dayDate,
+                    time: dayDate.getTime(),
+                    title: dateFilter(dayDate, $scope.formatDayLong),
+                    nbEvents: 0,
+                    today,
+                    isLastOfMonth,
                 });
-                lastMonth = dayDate.getMonth();
-                monthNumDays = 1;
-                nbMonths += 1;
+                // Populate the list of all months
+                monthNumDays += 1;
+                if (lastMonth !== dayDate.getMonth()) {
+                    $scope.enumMonths.push({
+                        num: dayDate.getMonth(),
+                        name: dateFilter(dayDate, $scope.formatMonth),
+                    });
+                    lastMonth = dayDate.getMonth();
+                    monthNumDays = 1;
+                    nbMonths += 1;
+                }
+                if ($scope.enumMonths[nbMonths - 1]) {
+                    $scope.enumMonths[nbMonths - 1].numDays = monthNumDays;
+                }
             }
-            if ($scope.enumMonths[nbMonths - 1]) {
-                $scope.enumMonths[nbMonths - 1].numDays = monthNumDays;
-            }
-        }
+        });
     };
 
-    $scope.isDayInMiddleOfEvent = SchedulerHelperService.isDayInMiddleOfEvent;
-    $scope.isDayAtStartOfEvent = SchedulerHelperService.isDayAtStartOfEvent;
-    $scope.isDayAtEndOfEvent = SchedulerHelperService.isDayAtEndOfEvent;
-    $scope.isEventDay = SchedulerHelperService.isEventDay;
-    $scope.isCurrent = SchedulerHelperService.isCurrent;
+    $scope.isDayAtStartOfEventInView = SchedulerHelperService.isDayAtStartOfEventInView;
 
     $scope.prevDay = function () {
         $scope.viewStart = SchedulerHelperService.addDaysToDate($scope.viewStart, -1);

@@ -20,11 +20,8 @@ function SchedulerEventDirectiveController(
         $scope.tooltipHtml = getTooltipHtml(newVal);
     });
 
-    $scope.isDayInMiddleOfEvent = SchedulerHelperService.isDayInMiddleOfEvent;
-    $scope.isDayAtStartOfEvent = SchedulerHelperService.isDayAtStartOfEvent;
-    $scope.isDayAtEndOfEvent = SchedulerHelperService.isDayAtEndOfEvent;
-    $scope.isEventDay = SchedulerHelperService.isEventDay;
-    $scope.getEventLengthInDays = SchedulerHelperService.getEventLengthInDays;
+    $scope.getEventLengthInViewInDays = SchedulerHelperService.getEventLengthInViewInDays;
+    $scope.isCurrentDate = SchedulerHelperService.isCurrentDate;
 }
 
 module.exports = SchedulerEventDirectiveController;

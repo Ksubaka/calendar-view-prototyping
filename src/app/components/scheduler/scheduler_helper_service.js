@@ -33,21 +33,24 @@ function SchedulerHelperService() {
         isDayInMiddleOfEvent(day, event) {
             return day.date > event.startDate && day.date < event.endDate;
         },
-        isDayAtStartOfEvent(day, event) {
-            return day.date.getTime() === event.startDate.getTime();
-        },
-        isDayAtEndOfEvent(day, event) {
-            return day.date.getTime() === event.endDate.getTime();
-        },
-        isEventDay(day, event) {
-            return day.date > event.startDate && day.date < event.endDate;
+        isDayAtStartOfEventInView(day, event, viewStart) {
+            const dayAsTime = day.date.getTime();
+            const eventStartTime = event.startDate.getTime();
+            const eventEndTime = event.endDate.getTime();
+            const viewStartTime = viewStart.getTime();
+            return dayAsTime === eventStartTime
+                || (dayAsTime === viewStartTime && eventStartTime <= viewStartTime && eventEndTime >= viewStartTime);
         },
         isCurrentDate(event) {
             const currentDate = new Date();
             return event.startDate.getTime() <= currentDate.getTime() && event.endDate.getTime() >= currentDate.getTime();
         },
-        getEventLengthInDays(event) {
-            return daysInPeriod(event.startDate, event.endDate, false) + 1;
+        getEventLengthInViewInDays(event, viewStart) {
+            const eventLength = daysInPeriod(event.startDate, event.endDate, false) + 1;
+            if (viewStart.getTime() > event.startDate.getTime()) {
+                return eventLength - daysInPeriod(viewStart, event.startDate, false);
+            }
+            return eventLength;
         },
     };
 }

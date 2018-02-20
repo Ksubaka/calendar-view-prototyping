@@ -51,7 +51,11 @@
                     title="{{day.title}}"
                     ng-style="{'height': rowHeight, 'width': cellWidth}"
                     ng-class="{'today': day.today, 'weekend': isWeekend(day), 'last-day-in-month': day.isLastOfMonth}">
-                        <scheduler-event event="event" day="day" ng-if="isDayAtStartOfEvent(day, event)"></scheduler-event>
+                        <scheduler-event event="event"
+                                         day="day"
+                                         view-start="viewStart"
+                                         ng-if="isDayAtStartOfEventInView(day, event, viewStart)">
+                        </scheduler-event>
                 </td>
             </tr>
         </tbody>
