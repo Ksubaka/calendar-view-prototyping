@@ -1,63 +1,65 @@
-<header>
-    <div class="left-actions form-inline">
-        <input type="text" class="form-control input-sm" size="7" />
-        <div class="btn btn-default btn-sm" ng-click="setStartView(2016, 6, 20)">Set Start Date</div>
-    </div>
-    <div class="right-actions form-inline">
-        <input type="text" class="form-control input-sm" size="7" />
-        <div class="btn btn-default btn-sm" ng-click="setEndView(2016, 8, 20)">Set End Date</div>
-    </div>
-    <div class="clearfix hidden-sm hidden-md hidden-lg"></div>
-    <div class="center-actions">
-        <div class="h-sep">
-            <div class="btn btn-default btn-sm" ng-click="prevCustom(3)">&lt;&lt;</div>
-            <div class="btn btn-default btn-sm" ng-click="prevDay()">&lt;</div>
+<div class="scheduler">
+    <header>
+        <div class="left-actions form-inline">
+            <input type="text" class="form-control input-sm" size="7" />
+            <div class="btn btn-default btn-sm" ng-click="setStartView(2016, 6, 20)">Set Start Date</div>
         </div>
-        <div class="h-sep">
-            <div class="btn btn-default btn-sm" ng-click="zoomIn(1)">Zoom In</div>
-            <div class="btn btn-default btn-sm" ng-click="centerView()">Center on today</div>
-            <div class="btn btn-default btn-sm" ng-click="zoomOut(1)">Zoom Out</div>
+        <div class="right-actions form-inline">
+            <input type="text" class="form-control input-sm" size="7" />
+            <div class="btn btn-default btn-sm" ng-click="setEndView(2016, 8, 20)">Set End Date</div>
         </div>
-        <div class="h-sep">
-            <div class="btn btn-default btn-sm" ng-click="nextDay()">&gt;</div>
-            <div class="btn btn-default btn-sm" ng-click="nextCustom(3)">&gt;&gt;</div>
+        <div class="clearfix hidden-sm hidden-md hidden-lg"></div>
+        <div class="center-actions">
+            <div class="h-sep">
+                <div class="btn btn-default btn-sm" ng-click="prevCustom(3)">&lt;&lt;</div>
+                <div class="btn btn-default btn-sm" ng-click="prevDay()">&lt;</div>
+            </div>
+            <div class="h-sep">
+                <div class="btn btn-default btn-sm" ng-click="zoomIn(1)">Zoom In</div>
+                <div class="btn btn-default btn-sm" ng-click="centerView()">Center on today</div>
+                <div class="btn btn-default btn-sm" ng-click="zoomOut(1)">Zoom Out</div>
+            </div>
+            <div class="h-sep">
+                <div class="btn btn-default btn-sm" ng-click="nextDay()">&gt;</div>
+                <div class="btn btn-default btn-sm" ng-click="nextCustom(3)">&gt;&gt;</div>
+            </div>
         </div>
-    </div>
-    <div class="clearfix"></div>
-</header>
+        <div class="clearfix"></div>
+    </header>
 
-<div class="timeline-container">
-    <table class="events-table">
-        <thead scheduler-header view-start="viewStart" view-end="viewEnd" cell-width="cellWidth" render-view="renderView()">
-            <tr class="month-line">
-                <th class="left-margin blank-margin-cell" ng-style="{'width': leftColumnWidth}"></th>
-                <th ng-repeat="month in enumMonths" colspan="{{month.numDays}}" class="month">{{month.name}}</th>
-            </tr>
-            <tr class="day-line">
-                <th class="left-margin" ng-style="{'width': leftColumnWidth}"></th>
-                <th ng-repeat="day in enumDays" title="{{day.title}}"
-                    ng-class="{'today': day.today, 'weekend': isWeekend(day), 'last-day-in-month': day.isLastOfMonth}">
-                    <span ng-show="cellWidth > 18">{{day.num}}</span>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="event in events">
-                <td class="left-margin" ng-style="{'width': leftColumnWidth}">
-                    {{event.name}}
-                </td>
-                <td ng-repeat="day in enumDays"
-                    class="event-row-day"
-                    title="{{day.title}}"
-                    ng-style="{'height': rowHeight, 'width': cellWidth}"
-                    ng-class="{'today': day.today, 'weekend': isWeekend(day), 'last-day-in-month': day.isLastOfMonth}">
-                        <scheduler-event event="event"
-                                         day="day"
-                                         view-start="viewStart"
-                                         ng-if="isDayAtStartOfEventInView(day, event, viewStart)">
-                        </scheduler-event>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="timeline-container">
+        <table class="events-table">
+            <thead scheduler-header view-start="viewStart" view-end="viewEnd" cell-width="cellWidth" render-view="renderView()">
+                <tr class="month-line">
+                    <th class="left-margin blank-margin-cell" ng-style="{'width': leftColumnWidth}"></th>
+                    <th ng-repeat="month in enumMonths" colspan="{{month.numDays}}" class="month">{{month.name}}</th>
+                </tr>
+                <tr class="day-line">
+                    <th class="left-margin" ng-style="{'width': leftColumnWidth}"></th>
+                    <th ng-repeat="day in enumDays" title="{{day.title}}"
+                        ng-class="{'today': day.today, 'weekend': isWeekend(day), 'last-day-in-month': day.isLastOfMonth}">
+                        <span ng-show="cellWidth > 18">{{day.num}}</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="event in events">
+                    <td class="left-margin" ng-style="{'width': leftColumnWidth}">
+                        {{event.name}}
+                    </td>
+                    <td ng-repeat="day in enumDays"
+                        class="event-row-day"
+                        title="{{day.title}}"
+                        ng-style="{'height': rowHeight, 'width': cellWidth}"
+                        ng-class="{'today': day.today, 'weekend': isWeekend(day), 'last-day-in-month': day.isLastOfMonth}">
+                            <scheduler-event event="event"
+                                             day="day"
+                                             view-start="viewStart"
+                                             ng-if="isDayAtStartOfEventInView(day, event, viewStart)">
+                            </scheduler-event>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

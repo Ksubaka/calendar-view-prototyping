@@ -1,9 +1,9 @@
-<div class="scheduler-event" ng-style="{'width': (getEventLengthInViewInDays(event, viewStart) * 100) + '%'}">
+<div class="scheduler-event" ng-style="{'width': 'calc(' + (getEventLengthInViewInDays(event, viewStart) * 100) + '% + ' + getEventLengthInViewInDays(event, viewStart) + 'px)' }">
     <div uib-tooltip-html="tooltipHtml"
          tooltip-trigger="'click outsideClick'"
          tooltip-placement="center"
          class="event-day {{event.status}}"
-         ng-class="{'current': isCurrentDate(event)}">
+         ng-class="{'current': isCurrentDate(event), 'starts-off-grid': event.startDate < viewStart }">
         <label>{{event.name}}</label>
     </div>
 </div>

@@ -30,9 +30,6 @@ function SchedulerHelperService() {
         addDaysToDate,
         daysInPeriod,
         daysInMonth,
-        isDayInMiddleOfEvent(day, event) {
-            return day.date > event.startDate && day.date < event.endDate;
-        },
         isDayAtStartOfEventInView(day, event, viewStart) {
             const dayAsTime = day.date.getTime();
             const eventStartTime = event.startDate.getTime();
@@ -52,6 +49,7 @@ function SchedulerHelperService() {
             }
             return eventLength;
         },
+
     };
 }
 
