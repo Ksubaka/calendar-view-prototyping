@@ -27,7 +27,7 @@
 </header>
 
 <div class="timeline-container">
-    <table class="liner-table">
+    <table class="events-table">
         <thead>
             <tr class="month-line">
                 <th class="left-margin blank-margin-cell" ng-style="{'width': leftColumnWidth}"></th>
@@ -42,19 +42,6 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="left-margin" ng-style="{'width': leftColumnWidth}"></td>
-                <td ng-repeat="day in enumDays"
-                    class="liner-row-day"
-                    title="{{day.title}}"
-                    ng-style="{'height': gridHeight, 'width': cellWidth}"
-                    ng-class="{'today': day.today, 'weekend': isWeekend(day), 'last-day-in-month': day.isLastOfMonth}">
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="events-table">
-        <tbody>
             <tr ng-repeat="event in events">
                 <td class="left-margin" ng-style="{'width': leftColumnWidth}">
                     {{event.name}}
@@ -62,7 +49,8 @@
                 <td ng-repeat="day in enumDays"
                     class="event-row-day"
                     title="{{day.title}}"
-                    ng-style="{'height': rowHeight, 'width': cellWidth}">
+                    ng-style="{'height': rowHeight, 'width': cellWidth}"
+                    ng-class="{'today': day.today, 'weekend': isWeekend(day), 'last-day-in-month': day.isLastOfMonth}">
                         <scheduler-event event="event" day="day" ng-if="isDayAtStartOfEvent(day, event)"></scheduler-event>
                 </td>
             </tr>

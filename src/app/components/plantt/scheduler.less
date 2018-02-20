@@ -45,12 +45,15 @@ scheduler {
         z-index: 100;
         position: relative;
 
-        table {
+        .events-table {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
             table-layout: fixed;
+            border: 1px solid #bbb;
+            box-sizing: border-box;
+            overflow: hidden;
+            width: 100%;
 
             .left-margin {
                 text-align: left;
@@ -64,66 +67,53 @@ scheduler {
                 }
             }
 
-            &.liner-table {
-                border: 1px solid #bbb;
+            tr {
+                td, th {
+                    border-right: 1px solid #bbb;
+                    padding: 0;
+                    margin: 0;
+                    vertical-align: middle;
+                    text-align: center;
+                    border-bottom: 1px solid #ddd;
+                }
 
-                tr {
-                    td, th {
-                        border-right: 1px solid #bbb;
-                        padding: 0;
-                        margin: 0;
-                        vertical-align: middle;
-                        text-align: center;
-                        border-bottom: 1px solid #ddd;
-                    }
-
-                    &.month-line {
-                        th {
-                            font-size: 1.2em;
-                            background-color: #F5F5F5;
-                            height: 45px;
-                        }
-                    }
-
-                    &.day-line {
-                        th {
-                            height: 18px;
-                            font-weight: bold;
-                            background-color: #F5F5F5;
-                        }
+                &.month-line {
+                    th {
+                        font-size: 1.2em;
+                        background-color: #F5F5F5;
+                        height: 45px;
                     }
                 }
 
-                .liner-row-day {
-
-                    &.today {
-                        background-color: #FFDBCE !important;
-                    }
-
-                    &.weekend {
-                        background-color: #eeeeee;
-                    }
-
-                    &.sunday {
-                        border-right: 1px solid #F88;
-                    }
-
-                    &.last-day-in-month {
-                        border-right: 1px solid #F33;
+                &.day-line {
+                    th {
+                        height: 18px;
+                        font-weight: bold;
+                        background-color: #F5F5F5;
                     }
                 }
             }
 
-            &.events-table {
-                top: 63px;
-                overflow: hidden;
+            .event-row-day {
 
                 td {
                     border-bottom: 1px solid #DDD;
                 }
 
-                .event-row-day {
-                    overflow: visible;
+                &.today {
+                    background-color: #FFDBCE !important;
+                }
+
+                &.weekend {
+                    background-color: #eeeeee;
+                }
+
+                &.sunday {
+                    border-right: 1px solid #F88;
+                }
+
+                &.last-day-in-month {
+                    border-right: 1px solid #F33;
                 }
             }
         }
