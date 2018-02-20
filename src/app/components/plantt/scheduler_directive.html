@@ -28,7 +28,7 @@
 
 <div class="timeline-container">
     <table class="events-table">
-        <thead>
+        <thead scheduler-header view-start="viewStart" view-end="viewEnd" cell-width="cellWidth" render-view="renderView()">
             <tr class="month-line">
                 <th class="left-margin blank-margin-cell" ng-style="{'width': leftColumnWidth}"></th>
                 <th ng-repeat="month in enumMonths" colspan="{{month.numDays}}" class="month">{{month.name}}</th>

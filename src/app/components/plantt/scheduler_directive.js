@@ -13,7 +13,7 @@ function SchedulerDirective() {
         },
         link: (scope, elem) => {
             scope.getGridWidth = function () {
-                return elem.find('.liner-table').prop('offsetWidth') - scope.leftColumnWidth;
+                return elem.find('.events-table').prop('offsetWidth') - scope.leftColumnWidth;
             };
         },
         controller: 'SchedulerDirectiveController',

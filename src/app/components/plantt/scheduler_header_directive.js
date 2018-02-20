@@ -1,17 +1,25 @@
+import css from './scheduler_header.less';
 
 /* @ngInject */
 function SchedulerHeaderDirective($document, $timeout, SchedulerHelperService) {
     return {
         restrict: 'A',
+        scope: {
+            viewStart: '=',
+            viewEnd: '=',
+            cellWidth: '=',
+            renderView: '&',
+        },
         link(scope, element) {
             let dragInit = false;
             let grabDeltaX = 0;
 
             function grabHeadMove(e) {
                 if (e.buttons !== 1) { return; }
-                e.preventDefault(); e.stopPropagation();
+                e.preventDefault();
+                e.stopPropagation();
                 dragInit = true;
-                grabDeltaX += e.movementX;
+                grabDeltaX += e.originalEvent.movementX;
                 if (Math.abs(grabDeltaX) >= scope.cellWidth) {
                     const deltaDay = Math.round(grabDeltaX / scope.cellWidth);
 
@@ -24,7 +32,8 @@ function SchedulerHeaderDirective($document, $timeout, SchedulerHelperService) {
                 }
             }
             function grabHeadEnd(e) {
-                e.preventDefault(); e.stopPropagation();
+                e.preventDefault();
+                e.stopPropagation();
                 if (!dragInit) { return; }
                 dragInit = false;
                 grabDeltaX = 0;
@@ -32,7 +41,8 @@ function SchedulerHeaderDirective($document, $timeout, SchedulerHelperService) {
                 $document.off('mouseup', grabHeadEnd);
             }
             function grabHeadStart(e) {
-                e.preventDefault(); e.stopPropagation();
+                e.preventDefault();
+                e.stopPropagation();
                 grabDeltaX = 0;
                 $document.on('mousemove', grabHeadMove);
                 $document.on('mouseup', grabHeadEnd);
